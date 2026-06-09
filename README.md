@@ -24,3 +24,6 @@
 
 - [Inception (Medium)](https://medium.com/@imyzf/inception-3979046d90a0)
 - [Guide to Dockerizing Your First Infrastructure( PART I) (Medium)](https://devabdilah.medium.com/inception-42-a-comprehensive-guide-to-dockerizing-your-first-infrastructure-part-i-bd7d4bdc13e6)
+- [IBM - Distinguished Names](https://www.ibm.com/docs/en/ibm-mq/7.5.0?topic=certificates-distinguished-names)
+- [42 Inception TIPS](https://tuto.grademe.fr/inception/)
+- [Docker Docs](https://docs.docker.com/)

@@ -6,11 +6,10 @@ services:
       dockerfile: Dockerfile
     container_name: mariadb
     restart: always
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    secrets:
+      - credentials
+      - db_password
+      - db_root_password
     networks:
       - inception_network
     volumes:
@@ -22,17 +21,12 @@ services:
       dockerfile: Dockerfile
     container_name: wordpress
     restart: always
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      DOMAIN_NAME: ${DOMAIN_NAME}
-      WP_ADMIN_USER: ${WP_ADMIN_USER}
-      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
-      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
-      WP_USER: ${WP_USER}
-      WP_PASSWORD: ${WP_PASSWORD}
-      WP_EMAIL: ${WP_EMAIL}
+    depends_on:
+      - mariadb
+    env_file: .env
+    secrets:
+      - credentials
+      - db_password
     networks:
       - inception_network
     volumes:
@@ -46,6 +40,7 @@ services:
     restart: always
     depends_on:
       - wordpress
+    env_file: .env
     ports:
       - "443:443"
     networks:
@@ -70,3 +65,11 @@ volumes:
       type: none
       o: bind
       device: /home/mpouillo/data/wordpress
+
+secrets:
+  credentials:
+    file: ../secrets/credentials.txt
+  db_password:
+    file: ../secrets/db_password.txt
+  db_root_password:
+    file: ../secrets/db_root_password.txt

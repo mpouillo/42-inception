@@ -4,6 +4,10 @@ set -e # Crash if any commands fails
 # Ensure PHP-FPM runtime directory exists
 mkdir -p /run/php
 
+# Loading env secrets
+. /run/secrets/credentials
+MYSQL_PASSWORD=$(cat /run/secrets/db_password)
+
 # Check if WordPress is already downloaded
 if [ ! -f "wp-config.php" ]; then
     echo "Downloading WordPress..."

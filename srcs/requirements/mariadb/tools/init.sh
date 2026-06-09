@@ -1,6 +1,11 @@
 #! /usr/bin/env bash
 set -e # Crash if any commands fails
 
+# Loading env secrets
+. /run/secrets/credentials
+MYSQL_PASSWORD=$(cat /run/secrets/db_password)
+MYSQL_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
+
 # Ensure socket directory exists and is owned by mysql
 mkdir -p /run/mysqld
 chown -R mysql:mysql /run/mysqld

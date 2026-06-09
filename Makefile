@@ -2,7 +2,9 @@
 #							INCEPTION
 # ==============================================================
 
-all:
+all: up
+
+up:
 	@echo "Creating mariadb storage directories on host..."
 	@mkdir -p /home/mpouillo/data/mariadb
 	@mkdir -p /home/mpouillo/data/wordpress
@@ -11,6 +13,10 @@ all:
 
 down:
 	@cd srcs && docker compose down -v
+
+secrets:
+	cp -r ~/Documents/42/inception/secrets .
+	cp ~/Documents/42/inception/srcs/.env srcs/.env
 
 clean: down
 	@echo "Cleaning up containers and networks..."
