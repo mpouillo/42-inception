@@ -1,0 +1,17 @@
+FROM debian:bookworm
+
+# Update apt and install mariadb
+# Remove unnessary APT cache after installation
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y mariadb-server \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy configuration scripts
+COPY confs/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY tools/init.sh /usr/local/bin/init.sh
+RUN chmod +x /usr/local/bin/init.sh
+
+EXPOSE 3306
+
+ENTRYPOINT ["init.sh"]
