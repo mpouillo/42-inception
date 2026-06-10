@@ -1,11 +1,12 @@
-services:
+name: inception
 
+services:
   mariadb:
     build:
       context: requirements/mariadb
       dockerfile: Dockerfile
     container_name: mariadb
-    restart: always
+    restart: unless-stopped
     secrets:
       - credentials
       - db_password
@@ -20,7 +21,7 @@ services:
       context: requirements/wordpress
       dockerfile: Dockerfile
     container_name: wordpress
-    restart: always
+    restart: unless-stopped
     depends_on:
       - mariadb
     env_file: .env
@@ -37,7 +38,7 @@ services:
       context: requirements/nginx
       dockerfile: Dockerfile
     container_name: nginx
-    restart: always
+    restart: unless-stopped
     depends_on:
       - wordpress
     env_file: .env
@@ -45,6 +46,33 @@ services:
       - "443:443"
     networks:
       - inception_network
+    volumes:
+      - wordpress_data:/var/www/html
+
+  redis:
+    build:
+      context: requirements/bonus/redis
+      dockerfile: Dockerfile
+    container_name: redis
+    restart: unless-stopped
+    networks:
+      - inception_network
+
+  ftp:
+    build:
+      context: requirements/bonus/ftp
+      dockerfile: Dockerfile
+    container_name: ftp
+    restart: unless-stopped
+    secrets:
+      - credentials
+    depends_on:
+      - wordpress
+    networks:
+      - inception_network
+    ports:
+      - "21:21"
+      - "40000-40005:40000-40005"
     volumes:
       - wordpress_data:/var/www/html
 

@@ -13,13 +13,18 @@ if [ ! -f "wp-config.php" ]; then
     echo "Downloading WordPress..."
     wp core download --allow-root
 
-echo "Creating 'wp-config.php'..."
+    echo "Creating 'wp-config.php'..."
     wp config create \
         --dbname="${MYSQL_DATABASE}" \
         --dbuser="${MYSQL_USER}" \
         --dbpass="${MYSQL_PASSWORD}" \
         --dbhost="mariadb" \
         --allow-root
+
+    echo "Configuring Redis cache..."
+    wp config set WP_CACHE true --type=constant --allow-root
+    wp config set WP_REDIS_HOST redis --allow-root
+    wp config set WP_REDIS_PORT 6379 --raw --allow-root
 
     echo "Installing WordPress..."
     wp core install \
@@ -30,6 +35,10 @@ echo "Creating 'wp-config.php'..."
         --admin_email="${WP_ADMIN_EMAIL}" \
         --skip-email \
         --allow-root
+
+    echo "Installing and enabling Redis cache plugin..."
+    wp plugin install redis-cache --activate --allow-root
+    wp redis enable --allow-root
 
     echo "Creating regular user..."
     wp user create "${WP_USER}" "${WP_EMAIL}" \

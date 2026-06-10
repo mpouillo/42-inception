@@ -27,3 +27,4 @@
 - [IBM - Distinguished Names](https://www.ibm.com/docs/en/ibm-mq/7.5.0?topic=certificates-distinguished-names)
 - [42 Inception TIPS](https://tuto.grademe.fr/inception/)
 - [Docker Docs](https://docs.docker.com/)
+- [Manually Configuring the Redis Object Cache Plugin for WordPress](https://support.pagely.com/hc/en-us/articles/360015193272-Manually-Configuring-the-Redis-Object-Cache-Plugin-for-WordPress)

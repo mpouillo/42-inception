@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-set -e # Crash if any commands fails
+set -e # Crash if any command fails
 
 # Loading env secrets
 . /run/secrets/credentials

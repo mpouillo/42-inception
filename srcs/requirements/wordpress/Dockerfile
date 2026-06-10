@@ -4,7 +4,7 @@ FROM debian:bookworm
 # Remove unnessary APT cache after installation
 RUN apt-get update \
     && apt-get upgrade -y \
-    && apt-get install -y php8.2-fpm php8.2-mysql mariadb-client curl wget \
+    && apt-get install -y php8.2-fpm php8.2-mysql php8.2-redis mariadb-client curl wget \
     && rm -rf /var/lib/apt/lists/*
 
 # Download wordpress
