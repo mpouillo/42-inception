@@ -7,8 +7,9 @@ services:
       dockerfile: Dockerfile
     container_name: mariadb
     restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     secrets:
-      - credentials
       - db_password
       - db_root_password
     networks:
@@ -24,10 +25,18 @@ services:
     restart: unless-stopped
     depends_on:
       - mariadb
-    env_file: .env
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      DOMAIN_NAME: ${DOMAIN_NAME}
     secrets:
-      - credentials
       - db_password
+      - db_user
+      - wp_admin_email
+      - wp_admin_password
+      - wp_admin_user
+      - wp_email
+      - wp_password
+      - wp_user
     networks:
       - inception_network
     volumes:
@@ -41,7 +50,15 @@ services:
     restart: unless-stopped
     depends_on:
       - wordpress
-    env_file: .env
+      - static_website
+    environment:
+      COUNTRY: ${COUNTRY}
+      STATE: ${STATE}
+      LOCALITY: ${LOCALITY}
+      ORGANIZATION: ${ORGANIZATION}
+      ORGANIZATION_UNIT: ${ORGANIZATION_UNIT}
+      COMMON_NAME: ${COMMON_NAME}
+      USER_ID: ${USER_ID}
     ports:
       - "443:443"
     networks:
@@ -64,17 +81,37 @@ services:
       dockerfile: Dockerfile
     container_name: ftp
     restart: unless-stopped
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      COUNTRY: ${COUNTRY}
+      STATE: ${STATE}
+      LOCALITY: ${LOCALITY}
+      ORGANIZATION: ${ORGANIZATION}
+      ORGANIZATION_UNIT: ${ORGANIZATION_UNIT}
+      COMMON_NAME: ${COMMON_NAME}
+      USER_ID: ${USER_ID}
     secrets:
-      - credentials
+      - ftp_password
+      - ftp_user
     depends_on:
       - wordpress
     networks:
       - inception_network
     ports:
+      - "20:20"
       - "21:21"
       - "40000-40005:40000-40005"
     volumes:
       - wordpress_data:/var/www/html
+
+  static_website:
+    build:
+      context: requirements/bonus/static_website
+      dockerfile: Dockerfile
+    container_name: static_website
+    restart: unless-stopped
+    networks:
+      - inception_network
 
 networks:
   inception_network:
@@ -95,9 +132,25 @@ volumes:
       device: /home/mpouillo/data/wordpress
 
 secrets:
-  credentials:
-    file: ../secrets/credentials.txt
   db_password:
     file: ../secrets/db_password.txt
   db_root_password:
     file: ../secrets/db_root_password.txt
+  db_user:
+    file: ../secrets/db_user.txt
+  ftp_password:
+    file: ../secrets/ftp_password.txt
+  ftp_user:
+    file: ../secrets/ftp_user.txt
+  wp_admin_email:
+    file: ../secrets/wp_admin_email.txt
+  wp_admin_password:
+    file: ../secrets/wp_admin_password.txt
+  wp_admin_user:
+    file: ../secrets/wp_admin_user.txt
+  wp_email:
+    file: ../secrets/wp_email.txt
+  wp_password:
+    file: ../secrets/wp_password.txt
+  wp_user:
+    file: ../secrets/wp_user.txt

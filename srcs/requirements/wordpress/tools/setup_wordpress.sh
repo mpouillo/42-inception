@@ -1,15 +1,26 @@
 #! /usr/bin/env bash
-set -e # Crash if any commands fails
+
+set -e
 
 # Ensure PHP-FPM runtime directory exists
 mkdir -p /run/php
 
-# Loading env secrets
-. /run/secrets/credentials
-MYSQL_PASSWORD=$(cat /run/secrets/db_password)
+WP_PATH="/var/www/html"
 
-# Check if WordPress is already downloaded
-if [ ! -f "wp-config.php" ]; then
+# Loading secrets
+MYSQL_PASSWORD=$(cat /run/secrets/db_password)
+MYSQL_USER=$(cat /run/secrets/db_user)
+WP_ADMIN_EMAIL=$(cat /run/secrets/wp_admin_email)
+WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
+WP_ADMIN_USER=$(cat /run/secrets/wp_admin_user)
+WP_EMAIL=$(cat /run/secrets/wp_email)
+WP_PASSWORD=$(cat /run/secrets/wp_password)
+WP_USER=$(cat /run/secrets/wp_user)
+
+echo "Setting up WordPress..."
+
+# Download and configure WordPress if not present
+if [ ! -f "$WP_PATH/wp-config.php" ]; then
     echo "Downloading WordPress..."
     wp core download --allow-root
 
@@ -20,6 +31,11 @@ if [ ! -f "wp-config.php" ]; then
         --dbpass="${MYSQL_PASSWORD}" \
         --dbhost="mariadb" \
         --allow-root
+
+    # Set secure permissions
+    find "$WP_PATH" -type d -exec chmod 750 {} \;
+    find "$WP_PATH" -type f -exec chmod 640 {} \;
+    chown -R www-data:www-data "$WP_PATH"
 
     echo "Configuring Redis cache..."
     wp config set WP_CACHE true --type=constant --allow-root
@@ -45,7 +61,11 @@ if [ ! -f "wp-config.php" ]; then
         --user_pass="${WP_PASSWORD}" \
         --role=author \
         --allow-root
+
+    echo "WordPress setup complete."
+else
+    echo "WordPress already initialized, skipping setup."
 fi
 
-# Run PHP-FPM in foreground
+echo "Starting PHP-FPM..."
 exec php-fpm8.2 -F
