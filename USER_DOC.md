@@ -11,7 +11,7 @@
 | FTP               | 20, 21, 40000-40005   | 20, 21, 40000-40005   | Allows outside access to local WordPress files                |
 | Static website    | 8080                  | None                  | Serves website data requested through NGINX container         |
 | Adminer           | 8080                  | None                  | Provides easy access to WordPress database                    |
-| Portainer         | 9443                  | None                  | Web overview of local docker containers                       |
+| Portainer         | 9443                  | 9443                  | Web overview of local docker containers                       |
 
 ## Instructions
 
@@ -59,7 +59,7 @@ make clean
 | WordPress admin panel | `https://<login>.42.fr/wp-admin`  | WordPress administrator dashboard |
 | Static website        | `https://<login>.42.fr/static`    | Bonus static website              |
 | Adminer               | `https://<login>.42.fr/adminer`   | Database management interface     |
-| Portainer             | `https://<login>.42.fr/portainer` | Container management interface    |
+| Portainer             | `https://<login>.42.fr:9443`      | Container management interface    |
 
 ## Locate and manage credentials
 
