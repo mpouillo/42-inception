@@ -53,13 +53,13 @@ make clean
 > echo "127.0.0.1 <login>.42.fr" >> /etc/hosts
 > ```
 
-| Service               | Address                               | Description                       |
-| --------------------- | ------------------------------------- | --------------------------------- |
-| WordPress             | `https://<login>.42.fr`             | Main WordPress public website     |
-| WordPress admin panel | `https://<login>.42.fr/wp-admin`    | WordPress administrator dashboard |
-| Static website        | `https://<login>.42.fr/static`      | Bonus static website              |
-| Adminer               | `https://<login>.42.fr/adminer`     | Database management interface     |
-| Portainer             | `https://<login>.42.fr/portainer`   | Container management interface    |
+| Service               | Address                           | Description                       |
+| --------------------- | --------------------------------- | --------------------------------- |
+| WordPress             | `https://<login>.42.fr`           | Main WordPress public website     |
+| WordPress admin panel | `https://<login>.42.fr/wp-admin`  | WordPress administrator dashboard |
+| Static website        | `https://<login>.42.fr/static`    | Bonus static website              |
+| Adminer               | `https://<login>.42.fr/adminer`   | Database management interface     |
+| Portainer             | `https://<login>.42.fr/portainer` | Container management interface    |
 
 ## Locate and manage credentials
 
