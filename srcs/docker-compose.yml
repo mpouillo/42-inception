@@ -113,6 +113,35 @@ services:
     networks:
       - inception_network
 
+  adminer:
+    build:
+      context: requirements/bonus/adminer
+      dockerfile: Dockerfile
+    container_name: adminer
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+    networks:
+      - inception_network
+    ports:
+      - "8080:8080"
+
+  portainer:
+    build:
+      context: requirements/bonus/portainer
+      dockerfile: Dockerfile
+    container_name: portainer
+    restart: unless-stopped
+    secrets:
+      - portainer_password
+    networks:
+      - inception_network
+    ports:
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
 networks:
   inception_network:
     driver: bridge
@@ -123,13 +152,19 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/mpouillo/data/mariadb
+      device: /home/${USER}/data/mariadb
   wordpress_data:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/mpouillo/data/wordpress
+      device: /home/${USER}/data/wordpress
+  portainer_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/${USER}/data/portainer
 
 secrets:
   db_password:
@@ -142,6 +177,8 @@ secrets:
     file: ../secrets/ftp_password.txt
   ftp_user:
     file: ../secrets/ftp_user.txt
+  portainer_password:
+    file: ../secrets/portainer_password.txt
   wp_admin_email:
     file: ../secrets/wp_admin_email.txt
   wp_admin_password:

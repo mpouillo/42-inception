@@ -13,7 +13,10 @@ $(DATA_DIR)/mariadb:
 $(DATA_DIR)/wordpress:
 	mkdir -p $(DATA_DIR)/wordpress
 
-build: $(DATA_DIR)/mariadb $(DATA_DIR)/wordpress
+$(DATA_DIR)/portainer:
+	mkdir -p $(DATA_DIR)/portainer
+
+build: $(DATA_DIR)/mariadb $(DATA_DIR)/wordpress $(DATA_DIR)/portainer
 	docker compose -f $(COMPOSE_FILE) build
 
 up:

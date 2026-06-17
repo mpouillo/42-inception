@@ -67,5 +67,11 @@ else
     echo "WordPress already initialized, skipping setup."
 fi
 
+echo "Setting proper permissions for WordPress files..."
+chown -R www-data:www-data $WP_PATH
+
+find $WP_PATH -type d -exec chmod 755 {} +
+find $WP_PATH -type f -exec chmod 644 {} +
+
 echo "Starting PHP-FPM..."
 exec php-fpm8.2 -F
