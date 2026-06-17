@@ -83,6 +83,9 @@ Remove local data:
 $> make fclean
 ```
 
+> [!IMPORTANT]
+> For more details, refer to the `USER_DOC.md` and `DEV_DOC.md` files.
+
 ## Resources
 
 - [Inception (Medium)](https://medium.com/@imyzf/inception-3979046d90a0)
