@@ -23,6 +23,6 @@ COPY confs/vsftpd.conf /etc/vsftpd/vsftpd.conf
 COPY tools/setup_ftp.sh /usr/local/bin/setup_ftp.sh
 RUN chmod +x /usr/local/bin/setup_ftp.sh
 
-EXPOSE 21 40000-40005
+EXPOSE 20 21 40000-40005
 
 ENTRYPOINT ["setup_ftp.sh"]
